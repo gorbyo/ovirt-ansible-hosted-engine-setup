@@ -1,6 +1,11 @@
 ---
 - name: Create hosted engine local vm
   block:
+  - name: Wait until all interfaces wake up
+    wait_for:
+      timeout: 150
+    delegate_to: localhost
+    when: he_domain_type == "glusterfs" or he_domain_type == "nfs"
   - name: Check local VM dir stat
     stat:
       path: "{{ he_local_vm_dir }}"
